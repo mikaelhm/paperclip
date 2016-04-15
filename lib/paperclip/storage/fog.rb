@@ -84,6 +84,13 @@ module Paperclip
           end
         end
       end
+      
+      def fog_file_body(style = default_style)
+        directory.files.get(path(style)).body
+      rescue ::Fog::Errors::Error => e
+        warn("#{e} - cannot get #{path(style)} content")
+        false
+      end
 
       def fog_public(style = default_style)
         if @options.has_key?(:fog_public)
